@@ -1358,6 +1358,7 @@ impl<E: Engine, L: LockManager, F: KvFormat> Storage<E, L, F> {
         }
     }
 
+    // txn command entry my_note
     // The entry point of the storage scheduler. Not only transaction commands need to access keys serially.
     pub fn sched_txn_command<T: StorageCallbackType>(
         &self,

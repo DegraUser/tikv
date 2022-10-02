@@ -793,6 +793,7 @@ impl<E: Engine, L: LockManager> Scheduler<E, L> {
             };
             let begin_instant = Instant::now();
             let res = unsafe {
+                // my_note this check the lock. et
                 with_perf_context::<E, _, _>(tag, || {
                     task.cmd
                         .process_write(snapshot, context)
@@ -1080,6 +1081,7 @@ impl<E: Engine, L: LockManager> Scheduler<E, L> {
         });
 
         // Safety: `self.sched_pool` ensures a TLS engine exists.
+        // my_node async_write_ext is the real raft log write  like cirrodata replciate
         unsafe {
             with_tls_engine(|engine: &E| {
                 if let Err(e) =
