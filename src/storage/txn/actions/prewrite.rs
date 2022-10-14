@@ -142,6 +142,7 @@ pub fn prewrite<S: Snapshot>(
         OldValue::Unspecified
     };
 
+    // my_note write the lock(value is short in one key value, long in two key value)
     let final_min_commit_ts = mutation.write_lock(lock_status, txn)?;
 
     fail_point!("after_prewrite_one_key");
@@ -390,6 +391,7 @@ impl<'a> PrewriteMutation<'a> {
         }
     }
 
+    // my_note real write key and write value
     fn write_lock(self, lock_status: LockStatus, txn: &mut MvccTxn) -> Result<TimeStamp> {
         let mut try_one_pc = self.try_one_pc();
 
@@ -409,7 +411,7 @@ impl<'a> PrewriteMutation<'a> {
                 // If the value is short, embed it in Lock.
                 lock.short_value = Some(value);
             } else {
-                // value is long
+                // value is long my_note write key
                 txn.put_value(self.key.clone(), self.txn_props.start_ts, value);
             }
         }
@@ -442,6 +444,7 @@ impl<'a> PrewriteMutation<'a> {
         if try_one_pc {
             txn.put_locks_for_1pc(self.key, lock, lock_status.has_pessimistic_lock());
         } else {
+            // my_note write lock
             txn.put_lock(self.key, &lock);
         }
 

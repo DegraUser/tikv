@@ -379,6 +379,7 @@ impl<N: Fsm, C: Fsm, Handler: PollHandler<N, C>> Poller<N, C, Handler> {
     }
 
     // Poll for readiness and forward to handler. Remove stale peer if necessary.
+    // my_note apply fsm poller
     pub fn poll(&mut self) {
         fail_point!("poll");
         let mut batch = Batch::with_capacity(self.max_batch_size);

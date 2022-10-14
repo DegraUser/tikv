@@ -581,6 +581,7 @@ where
         if !delegate.pending_remove {
             delegate.write_apply_state(self.kv_wb_mut());
         }
+        // my_note the real write to rocksdb yet
         self.commit_opt(delegate, false);
         self.apply_res.push(ApplyRes {
             region_id: delegate.region_id(),
@@ -3637,6 +3638,7 @@ where
         cb.invoke_read(resp);
     }
 
+    // my_note like cirrodate execute replicated msg, exe the raft log
     fn handle_tasks(&mut self, apply_ctx: &mut ApplyContext<EK>, msgs: &mut Vec<Msg<EK>>) {
         let mut drainer = msgs.drain(..);
         let mut batch_apply = None;
